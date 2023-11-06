@@ -63,6 +63,22 @@ bookRoute.put(
   }
 );
 
+// Delete a book
+bookRoute.delete("/:id",authenticateToken, async (req, res) => {
+  try {
+    const book = await Book.findOneAndDelete({ _id: req.params.id });
+    if (book) {
+      res.status(200).json({ message: "Book removed" });
+    } else {
+      res.status(404).json({ message: "Book not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting book" });
+    console.log(error);
+  }
+});
+
+
 
 
 module.exports = bookRoute;
