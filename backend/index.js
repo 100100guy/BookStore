@@ -1,17 +1,22 @@
 // Import required modules
 const express = require('express');
 const dbConnect = require('./conn/dbConnect');
-const User = require('./models/User');
+const dotenv = require('dotenv');
 const userRoute = require('./routes/userRoutes');
+const error = require('./middleware/errorMiddleware');
+
+// Load environment variables
+dotenv.config();
 
 // Create an Express application
 const app = express();
 
+dbConnect();
 app.use(express.json());
 
 app.use('/api/users', userRoute);
 
-dbConnect();
+app.use(error.errorMiddlewareHandler);
 
 // Set the port to listen on
 const port = process.env.PORT || 3000;
