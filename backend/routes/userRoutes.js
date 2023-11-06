@@ -3,6 +3,7 @@ const User = require("../models/User"); // Import the User model
 const bcrypt = require("bcryptjs");
 const asyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
+const authenticateToken = require("../middleware/authMiddleware");
 
 const userRoute = express.Router();
 
@@ -88,10 +89,47 @@ userRoute.post("/login", async (req, res, next) => {
   }
 });
 
+
 // Update user
-userRoute.put("/update", (req, res) => {
-  res.send("update");
-});
+userRoute.put('/update', authenticateToken, async (req, res) => {
+    // Assuming you're using JWT and 'req.user' is available, you can access the authenticated user's information
+    const userId = req.user.userId;
+  
+    // The user data you want to update should be in the request body
+    const { username, email, newPassword } = req.body;
+  
+    // Find the user by their ID
+    const user = await User.findById(userId);
+  
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+  
+    // Update the user's properties
+    user.username = username || user.username;
+    user.email = email || user.email;
+  
+    // If a new password is provided, hash and update the password
+    if (newPassword) {
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      user.password = hashedPassword;
+    }
+  
+    // Save the updated user
+    await user.save();
+
+    // If the credentials are correct, create a JWT token
+    const token = jwt.sign({ userId: user._id }, "your_secret_key", {
+      expiresIn: "1h",
+    });
+
+   res.json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        token: token,
+      });
+  });
 
 // Delete user
 userRoute.delete("/delete/:id", (req, res) => {
@@ -99,8 +137,22 @@ userRoute.delete("/delete/:id", (req, res) => {
 });
 
 // Fetch users
-userRoute.get("/", (req, res) => {
-  res.send("fetch users");
+// Fetch all users (protected route, requires authentication)
+userRoute.get('/', authenticateToken, async (req, res) => {
+  try {
+    // Retrieve all users from the database
+    const users = await User.find({}); // You can specify the fields you want to include
+
+    if (users) {
+      res.status(200).json(users);
+    } else {
+      res.status(500);
+      throw new Error('No users found at the moment');
+    }
+  } catch (error) {
+    res.status(500)
+    throw new Error('Server error fetching users');
+  }
 });
 
 module.exports = userRoute;

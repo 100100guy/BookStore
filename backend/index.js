@@ -3,6 +3,7 @@ const express = require('express');
 const dbConnect = require('./conn/dbConnect');
 const dotenv = require('dotenv');
 const userRoute = require('./routes/userRoutes');
+const bookRoute = require('./routes/bookRoutes');
 const error = require('./middleware/errorMiddleware');
 
 // Load environment variables
@@ -15,6 +16,8 @@ dbConnect();
 app.use(express.json());
 
 app.use('/api/users', userRoute);
+
+app.use('/api/books', bookRoute);
 
 app.use(error.errorMiddlewareHandler);
 
