@@ -20,9 +20,15 @@ bookRoute.post("/create", async (req, res) => {
     const createdBook = await newBook.save();
     res.status(200).json(createdBook);
   } catch (error) {
-    res.status(500);
-    //throw new Error("Error creating book");
     console.log(error);
+    if (error.name === 'MongoError' && error.code === 11000) {
+      // Handle duplicate key (unique field) error
+      res.status(400).json({ error: 'Title must be unique.' });  
+    } else {
+      // Handle other errors
+      res.status(500).json({ error: 'Error creating book' });
+    }
+   
   }
 });
 

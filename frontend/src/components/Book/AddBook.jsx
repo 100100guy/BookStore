@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { createBookAction } from "../redux/actions/books/bookAction";
+import { useDispatch , useSelector} from "react-redux";
+import { createBookAction } from "../../redux/actions/books/bookAction";
 
 const AddBook = () => {
   const [title, setTitle] = useState("");
@@ -16,10 +16,11 @@ const AddBook = () => {
       author,
       category,
     };
-    dispatch(createBookAction(data));
-    setTitle("");
-    setAuthor("");
-    setCategory("");
+    
+      dispatch(createBookAction(data));
+      setTitle("");
+      setAuthor("");
+      setCategory("");
   };
 
   return (
@@ -62,6 +63,7 @@ const AddBook = () => {
                 </div>
                 <div className="modal-body">
                   <h1 className="text-center">Add Book</h1>
+
                   <form onSubmit={handleForm}>
                     <fieldset>
                       <div className="form-group">
