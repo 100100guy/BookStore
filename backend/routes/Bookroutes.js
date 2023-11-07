@@ -21,7 +21,8 @@ bookRoute.post("/create", async (req, res) => {
     res.status(200).json(createdBook);
   } catch (error) {
     res.status(500);
-    throw new Error("Error creating book");
+    //throw new Error("Error creating book");
+    console.log(error);
   }
 });
 

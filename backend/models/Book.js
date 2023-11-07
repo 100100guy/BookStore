@@ -12,11 +12,9 @@ const bookSchema = new mongoose.Schema({
     },
     category : {
         type: String,
-        required: true,
     },
     createdBy : {
         type: mongoose.Schema.Types.ObjectId,
-        required: true,
         ref: 'User',
     },
     

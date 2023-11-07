@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const userRoute = require('./routes/userRoutes');
 const bookRoute = require('./routes/bookRoutes');
 const error = require('./middleware/errorMiddleware');
+const cors = require('cors');
 
 // Load environment variables
 dotenv.config();
@@ -14,6 +15,8 @@ const app = express();
 
 dbConnect();
 app.use(express.json());
+
+app.use(cors());
 
 app.use('/api/users', userRoute);
 
@@ -29,4 +32,3 @@ app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
-//bop
