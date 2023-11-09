@@ -4,7 +4,7 @@ import { createBookReducer } from "../reducers/books/createBookReducer";
 import { configureStore } from "@reduxjs/toolkit";
 import { fetchBookReducer } from "../reducers/books/fetchBookReducer";
 import { userLoginReducer, userRegisterReducer } from "../reducers/users/userAuthReducer";
-import { userProfileReducer } from "../reducers/users/userProfileReducer";
+import { updateUserProfileReducer, userProfileReducer } from "../reducers/users/userProfileReducer";
 
 const rootReducer = combineReducers({
   // reducers
@@ -12,7 +12,8 @@ const rootReducer = combineReducers({
   booksList: fetchBookReducer,
   userRegister: userRegisterReducer,
   userLogin: userLoginReducer,
-  userProfile: userProfileReducer
+  userProfile: userProfileReducer,
+  updatedUserProfile: updateUserProfileReducer
 });
 
 //Get user from local storage

@@ -75,7 +75,6 @@ const Navbar = (props) => {
                     Profile
                   </Link>
                 </li>
-                <li className="nav-item">Users</li>
               </>
             )}
 

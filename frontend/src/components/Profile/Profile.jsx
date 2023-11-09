@@ -1,9 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { getUserProfileAction } from "../../redux/actions/users/userAction";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
+
+  const userProfile = useSelector((state) => state.userProfile);
+  const { loading, userInfo, error } = userProfile;
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUserProfileAction())
+  } , [dispatch])
+
+   console.log(userProfile)  
+
   return (
     <>
-      <section
+      { loading && <h1>Loading...</h1>}
+      { error && <p>{error}</p>}
+      {userInfo && (<><section
         className="vh-50"
         style={{ backgroundColor: "rgb(40, 40, 40) " }}
       >
@@ -22,9 +39,9 @@ const Profile = () => {
                       />
                     </div>
                     <div className="flex-grow-1 ms-3">
-                      <h5 className="mb-1">Danny McLoan</h5>
+                      <h5 className="mb-1">{ userInfo.username}</h5>
                       <p className="mb-2 pb-1" style={{ color: "#2b2a2a" }}>
-                        Senior Journalist
+                      { userInfo.email}
                       </p>
                       <div className="mx-auto"></div>
                       <div className="d-flex pt-1">
@@ -43,7 +60,7 @@ const Profile = () => {
           </div>
         </div>
       </section>
-      <table class="table table-hover">
+      <table className="table table-hover">
         <thead>
           <tr>
             <th scope="col">Author</th>
@@ -53,15 +70,21 @@ const Profile = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
+        {userInfo.books.map((book) => (
+          <tr key={book._id}>
+            <td>{book.author}</td>
+            <td>{book.title}</td>
+            <td>
+              <Link className="btn btn-primary" to="/updateprofile">Update</Link>
+            </td>
+            <td>
+              <button className="btn btn-danger">Delete</button>
+            </td>
           </tr>
-         
+        ))}
+          
         </tbody>
-      </table>
+      </table></>)}
     </>
   );
 };

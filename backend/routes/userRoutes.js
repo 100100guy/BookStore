@@ -95,50 +95,47 @@ userRoute.post("/login", async (req, res, next) => {
 
 // Update user
 userRoute.put("/update", authenticateToken, async (req, res) => {
-  // Assuming you're using JWT and 'req.user' is available, you can access the authenticated user's information
-  const userId = req.user.userId;
+  try {
+    // Assuming you're using JWT and 'req.user' is available, you can access the authenticated user's information
+    const userId = req.user.userId;
 
-  // The user data you want to update should be in the request body
-  const { username, email, newPassword } = req.body;
+    // The user data you want to update should be in the request body
+    const { username, email, newPassword } = req.body;
 
-  // Find the user by their ID
-  const user = await User.findById(userId);
+    // Find the user by their ID
+    const user = await User.findById(userId);
 
-  if (!user) {
-    return res.status(404).json({ message: "User not found" });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update the user's properties
+    user.username = username || user.username;
+    user.email = email || user.email;
+
+    // If a new password is provided, hash and update the password
+    if (newPassword) {
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      user.password = hashedPassword;
+    }
+
+    // Save the updated user
+    await user.save();
+
+    res.json({
+      _id: user._id,
+      username: user.username,
+      email: user.email,
+    });
+  } catch (error) {
+    console.log(error);
   }
-
-  // Update the user's properties
-  user.username = username || user.username;
-  user.email = email || user.email;
-
-  // If a new password is provided, hash and update the password
-  if (newPassword) {
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-    user.password = hashedPassword;
-  }
-
-  // Save the updated user
-  await user.save();
-
-  // If the credentials are correct, create a JWT token
-  const token = jwt.sign({ userId: user._id }, "your_secret_key", {
-    expiresIn: "1h",
-  });
-
-  res.json({
-    _id: user._id,
-    name: user.name,
-    email: user.email,
-    token: token,
-  });
 });
 
 // Delete user
 userRoute.delete("/delete/:id", (req, res) => {
   res.send("delete");
 });
-
 
 // Fetch all users (protected route, requires authentication)
 userRoute.get("/", authenticateToken, async (req, res) => {
@@ -157,7 +154,6 @@ userRoute.get("/", authenticateToken, async (req, res) => {
     throw new Error("Server error fetching users");
   }
 });
-
 
 //Fetch a single user (the own user)
 userRoute.get("/profile", authenticateToken, async (req, res) => {

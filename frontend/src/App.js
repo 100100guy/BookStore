@@ -7,6 +7,7 @@ import RegisterUser from "./components/User/Register";
 import LoginUser from "./components/User/Login";
 import HomePage from "./components/Home/HomePage";
 import Profile from "./components/Profile/Profile";
+import UpdateProfile from "./components/Profile/UpdateProfile";
 function App() {
   return (
     <>
@@ -14,6 +15,7 @@ function App() {
         <Navbar />
         <Routes>
         <Route exact path="/" element={<HomePage />} />
+        <Route exact path="/updateprofile" element={<UpdateProfile />} />
         <Route exact path="/profile" element={<Profile />} />
           <Route exact path="/login" element={<LoginUser />} />
           <Route exact path="/register" element={<RegisterUser />} />
