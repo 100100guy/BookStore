@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import { useDispatch , useSelector} from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { createBookAction } from "../../redux/actions/books/bookAction";
+import { useNavigate } from "react-router-dom";
 
 const AddBook = () => {
   const [title, setTitle] = useState("");
@@ -16,12 +17,25 @@ const AddBook = () => {
       author,
       category,
     };
-    
-      dispatch(createBookAction(data));
-      setTitle("");
-      setAuthor("");
-      setCategory("");
+
+    dispatch(createBookAction(data));
+    setTitle("");
+    setAuthor("");
+    setCategory("");
   };
+
+  // const navigate = useNavigate();
+
+  // //grab user login from store
+  // const userLogin = useSelector((state) => state.userLogin);
+  // const { loading, userInfo, error } = userLogin;
+
+  // //Redirect if user is already logged in
+  // useEffect(() => {
+  //   if (!userInfo) {
+  //     navigate("/");
+  //   }
+  // }, [navigate, userInfo]);
 
   return (
     <div className="row container-height">
@@ -49,17 +63,17 @@ const AddBook = () => {
                   <h5 className="modal-title" id="exampleModalLabel">
                     Create Book
                   </h5>
-                    <button
-                        type="button"
-                        className="close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                        onClick={() => {
-                        setTitle("");
-                        setAuthor("");
-                        setCategory("");
-                        }}
-                    />
+                  <button
+                    type="button"
+                    className="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                    onClick={() => {
+                      setTitle("");
+                      setAuthor("");
+                      setCategory("");
+                    }}
+                  />
                 </div>
                 <div className="modal-body">
                   <h1 className="text-center">Add Book</h1>
@@ -126,10 +140,10 @@ const AddBook = () => {
                     className="btn btn-danger"
                     data-dismiss="modal"
                     onClick={() => {
-                        setTitle("");
-                        setAuthor("");
-                        setCategory("");
-                        }}
+                      setTitle("");
+                      setAuthor("");
+                      setCategory("");
+                    }}
                   >
                     Close
                   </button>

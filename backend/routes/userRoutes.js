@@ -139,7 +139,7 @@ userRoute.delete("/delete/:id", (req, res) => {
   res.send("delete");
 });
 
-// Fetch users
+
 // Fetch all users (protected route, requires authentication)
 userRoute.get("/", authenticateToken, async (req, res) => {
   try {
@@ -158,4 +158,22 @@ userRoute.get("/", authenticateToken, async (req, res) => {
   }
 });
 
+
+//Fetch a single user (the own user)
+userRoute.get("/profile", authenticateToken, async (req, res) => {
+  try {
+    // Retrieve the user from the database
+    const user = await User.findById(req.user.userId).populate("books");
+
+    if (user) {
+      res.status(200).json(user);
+    } else {
+      res.status(500);
+      throw new Error("User not found");
+    }
+  } catch (error) {
+    res.status(500);
+    throw new Error("Server error fetching user");
+  }
+});
 module.exports = userRoute;

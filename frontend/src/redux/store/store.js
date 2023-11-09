@@ -10,7 +10,7 @@ const rootReducer = combineReducers({
   bookCreated: createBookReducer,
   booksList: fetchBookReducer,
   userRegister: userRegisterReducer,
-  userLogin: userLoginReducer
+  userLogin: userLoginReducer,
 });
 
 //Get user from local storage

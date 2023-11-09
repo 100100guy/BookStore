@@ -1,13 +1,24 @@
-import React from "react";
+import React, { useReducer, useState } from "react";
 import { Link, useHistory, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUserAction } from "../../redux/actions/users/userAction";
+
 
 const Navbar = (props) => {
+
   //grab user login from store
   const userLogin = useSelector((state) => state.userLogin);
   const { loading, userInfo, error } = userLogin;
 
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  const logoutHandler = (e) => {
+    e.preventDefault();
+    dispatch(logoutUserAction());
+    navigate("/");
+  };
 
   return (
     <header>
@@ -50,7 +61,7 @@ const Navbar = (props) => {
             ) : (
               <>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/books">
+                  <Link className="nav-link" to= "/books">
                     Books
                   </Link>
                 </li>
@@ -63,7 +74,11 @@ const Navbar = (props) => {
             )}
 
             <li className="nav-item">Users</li>
-            <li className="nav-item">Logout</li>
+            <li className="nav-item">
+              <Link onClick={logoutHandler} className="nav-link" >
+                Logout
+              </Link>
+            </li>
           </ul>
         </div>
       </nav>
