@@ -24,31 +24,21 @@ const AddBook = () => {
     setCategory("");
   };
 
-  // const navigate = useNavigate();
-
-  // //grab user login from store
-  // const userLogin = useSelector((state) => state.userLogin);
-  // const { loading, userInfo, error } = userLogin;
-
-  // //Redirect if user is already logged in
-  // useEffect(() => {
-  //   if (!userInfo) {
-  //     navigate("/");
-  //   }
-  // }, [navigate, userInfo]);
 
   return (
     <div className="row container-height">
-      <div className="col-lg-6 col-md-6 m-auto">
-        <div className="container">
-          <button
+      <div className=" col-md-2 m-auto" >
+      <button
             type="button"
             className="btn btn-primary"
             data-toggle="modal"
             data-target="#exampleModal"
+            
           >
             Click to add Book.
           </button>
+        <div className="container">
+          
 
           <div
             className="modal fade"
