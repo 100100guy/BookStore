@@ -70,10 +70,16 @@ const Navbar = (props) => {
                     Add Book
                   </Link>
                 </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/profile">
+                    Profile
+                  </Link>
+                </li>
+                <li className="nav-item">Users</li>
               </>
             )}
 
-            <li className="nav-item">Users</li>
+            
             <li className="nav-item">
               <Link onClick={logoutHandler} className="nav-link" >
                 Logout

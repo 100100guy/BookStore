@@ -8,14 +8,14 @@ const authenticateToken = require("../middleware/authMiddleware");
 const bookRoute = express.Router();
 
 // Create a new book
-bookRoute.post("/create", async (req, res) => {
+bookRoute.post("/create", authenticateToken, async (req, res) => {
   try {
-    const { title, author, category, createdBy } = req.body;
+    const { title, author, category} = req.body;
     const newBook = new Book({
       title,
       author,
       category,
-      createdBy,
+      createdBy: req.user.userId,
     });
     const createdBook = await newBook.save();
     res.status(200).json(createdBook);
